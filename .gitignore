@@ -29,6 +29,9 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
+# package-lock
+package-lock.json
+
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
@@ -59,3 +62,7 @@ typings/
 
 # next.js build output
 .next
+
+# Vim artifacts
+*.swp
+*.swo
