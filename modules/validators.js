@@ -3,10 +3,10 @@
  */
 
 // third-party requires
-const moment = require('moment');
+var moment = require('moment');
 
 // local requires
-const makeSchemaError = require('./error.js').makeSchemaError;
+var makeSchemaError = require('./error.js').makeSchemaError;
 
 module.exports = {
   isBoolean: function() {
