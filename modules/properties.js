@@ -25,24 +25,6 @@ module.exports = {
             return field_name
         }
         return _optional
-    },
-
-    AtLeastNOf: function(this_field, field_names, n) {
-        // Passed object must have at least 'n' of the 
-        // array of field names given.
-        function _atleastnof(obj) {
-            var count = 0
-            for(const k in obj) {
-                if(field_names.indexOf(k) !== -1) {
-                    count+=1
-                }
-            }
-            if(count < n) {
-                throw make_schema_error(`Could not find ${n} property names.`)
-            }
-            return this_field
-        }
-        return _atleastnof
     }
 }
             

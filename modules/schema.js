@@ -1,7 +1,7 @@
 // Schema definition
 
 // local requires
-var make_schema_error = require('./error.js').make_schema_error
+var makeSchemaError = require('./error.js').makeSchemaError
 
 module.exports = {
     Schema: function(definition) {
@@ -31,7 +31,7 @@ module.exports = {
         this.validate = function(obj) {
             // empty objects aren't valid
             if(Object.keys(obj).length === 0 && obj.constructor === Object) {
-                throw make_schema_error('An empty object isn\'t valid.');
+                throw makeSchemaError('An empty object isn\'t valid.');
             };
             var valid = {}
             // keys not in definition are automatically dropped.

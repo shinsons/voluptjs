@@ -20,11 +20,15 @@
     "author": "Nathen Hinson <nathen.hinson@gmail.com> ",
     "license": "MIT",
     "dependencies": {
-        "mocha": "^5.2.0",
         "moment": "^2.22.2"
     },
     "bugs": {
         "url": "https://github.com/shinsons/voluptjs/issues"
     },
-    "homepage": "https://github.com/shinsons/voluptjs#readme"
+    "homepage": "https://github.com/shinsons/voluptjs#readme",
+    "devDependencies": {
+        "eslint": "^5.10.0",
+        "eslint-config-google": "^0.11.0",
+        "mocha": "^5.2.0"
+    }
 }
