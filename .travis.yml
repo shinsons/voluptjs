@@ -4,14 +4,4 @@ node_js:
 
 script:  
   - npm install
-
-after_script:  
   - npm test
-
-deploy:
-  provider: npm
-  email: nathen.hinson@gmail.com
-  api_key:
-    secure: OclDV8iA1qS/SxElEMLJoHdOjRnFgngn1uKs+C5YvhMaRR52vgt33dmMT7XdGEwq+MzfW2crVJpiIe6yVjl0znbhC4x6YPBIbMPfZRZIBtj9RYpgywNFZnHR5IL/h02VYXhn1Zmf6Z+zGirLFy98fWtnbrBciTOI9txK84i9+Szu/CicE6WfryCJ+1zOU43p4z7xTHpzyxFwk3jAHm8bBuZqcnhXObuA1qvVNvpitCuVPqpE2Jg43yvU1GR4615zUkSMqLGMMT1d7l7dSbnQ54HufxdgbInj2D9dvDu7YqMnr+UeanR4NFrpCuJE5uQ2iMHfhuMFSxUsL/mh1MpNez1kFjJ4TI8bI4uvKisPy32D4rV6Bc2IigIlLIWiqXrReZWOZc0Vk4m0dJFqOgZNLHPgpDgvzACFLIzshCv0yMU/KilWQTPQSvwWmL9xJwHoUekh/hNQn79bSqjbBnKCFDzlhG2CpIk161BP3SsI8/FdEXGj4xgEam3RLRBEkBWDGOKYwkrw7N7hmwEQqOR0dfa0K7QTtTlTcq5oKchIPqMF8fPe6JxhN3s79OVg6kNKa1LVRAy2oBGtHamlqdfqTxZqTs8+BDv/NYpURrRyvEvcIFb2mjr6owfXRAxBzoG/pbBF3rT7xcaoppygFI7yxukuH0HOTYp+Y1ij4MYc2eg=
-  on:
-    repo: shinsons/voluptjs
