@@ -9,6 +9,25 @@ var moment = require('moment');
 var makeSchemaError = require('./error.js').makeSchemaError;
 
 module.exports = {
+  
+  isNull: function() {
+    /**
+     * Returns function that determines if a value is null or not.
+     * @param {any} val the value from the configured field.
+     * @param {object}} obj the object being validated.
+     * @returns (function} the validation function.
+     */
+    function _isnull(val, obj) {
+      if (typeof val === null) {
+        return val
+      }
+      else {
+        throw makeSchemaError('"' + val + '" is not null.');
+      }
+    }
+    return _isnull
+  },
+
   isBoolean: function() {
     /**
      * Returns function that determines if a value is boolen or not

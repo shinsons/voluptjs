@@ -30,7 +30,7 @@ module.exports = {
 
         this.validate = function(obj) {
             // empty objects aren't valid
-            if(Object.keys(obj).length === 0 && obj.constructor === Object) {
+            if(obj && Object.keys(obj).length === 0 && obj.constructor === Object) {
                 throw makeSchemaError('An empty object isn\'t valid.');
             };
             var valid = {}

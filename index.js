@@ -1,4 +1,5 @@
 var {
+    isNull,
     isArray,
     isString,
     isDate,
@@ -13,6 +14,7 @@ var Schema = require('./modules/schema.js').Schema
 var {Required, Optional, AtLeastNOf} = require('./modules/properties.js')
 
 module.exports = {
+    isNull,
     isArray,
     isString,
     isDate,
