@@ -4,7 +4,8 @@
     "description": "A work-a-like javascript clone of python voluptuous (https://pypi.org/project/voluptuous)",
     "main": "index.js",
     "scripts": {
-        "test": "mocha --ui tdd --recursive"
+      "lint": "eslint .",
+      "test": "mocha --ui tdd --recursive"
     },
     "repository": {
         "type": "git",
@@ -28,7 +29,6 @@
     "homepage": "https://github.com/shinsons/voluptjs#readme",
     "devDependencies": {
         "eslint": "^5.10.0",
-        "eslint-config-es5": "^0.5.0",
         "mocha": "^5.2.0"
     }
 }

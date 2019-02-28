@@ -5,7 +5,7 @@ var assert = require('assert');
 
 // sut require
 var Schema = require('../../index.js').Schema
-var {isString, mustNotMatch, isNull} = require('../../index.js')
+var {isString, mustNotMatch, isNull, Any, All} = require('../../index.js')
 var {Required, Optional} = require('../../index.js')
 
 suite("Test Schema.validate", function() {
@@ -26,9 +26,8 @@ suite("Test Schema.validate", function() {
   });
 
   test("null valid", function(done) {
-    debugger
     var sut = new Schema([
-      [Optional('name'),  [isNull(), isString()]],
+      [Optional('name'),  Any(isNull(), isString())],
       [Optional('label'),  isString()]
     ]);
     sut.throw_errors = true
@@ -82,7 +81,7 @@ suite("Test Schema.validate", function() {
   test("multiple validators one invalid.", function(done) {
     var sut = new Schema([
       [Optional('name'),  isString()],
-      [Required('label'),  [mustNotMatch('name'), isString()]],
+      [Required('label'),  All(mustNotMatch('name'), isString())],
       [Optional('group'),  isString()],
       [Required('from'),  isString()],
       [Required('to'),  isString()],

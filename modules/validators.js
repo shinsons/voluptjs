@@ -18,7 +18,7 @@ module.exports = {
      * @returns (function} the validation function.
      */
     function _isnull(val, obj) {
-      if (typeof val === null) {
+      if (val === null) {
         return val
       }
       else {
