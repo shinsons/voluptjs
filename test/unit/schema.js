@@ -4,13 +4,13 @@
 var assert = require('assert');
 
 // sut require
-var Schema = require('../../index.js').Schema
-var {isString, mustNotMatch, isNull, Any, All} = require('../../index.js')
-var {Required, Optional} = require('../../index.js')
+var Schema = require('../../index.js').Schema;
+var {isString, mustNotMatch, isNull, Any, All} = require('../../index.js');
+var {Required, Optional} = require('../../index.js');
 
-suite("Test Schema.validate", function() {
+suite('Test Schema.validate', function() {
 
-  test("empty object", function(done) {
+  test('empty object', function(done) {
     var sut = new Schema([
       [Optional('name'),  isString()],
       [Optional('label'),  isString()],
@@ -25,12 +25,12 @@ suite("Test Schema.validate", function() {
     done();
   });
 
-  test("null valid", function(done) {
+  test('null valid', function(done) {
     var sut = new Schema([
       [Optional('name'),  Any(isNull(), isString())],
       [Optional('label'),  isString()]
     ]);
-    sut.throw_errors = true
+    sut.throw_errors = true;
     const expectation = {
       name: null,
       label: 'probably not the right answer'
@@ -40,7 +40,7 @@ suite("Test Schema.validate", function() {
 
   });
 
-  test("Optional/Required mixed keys  all valid", function(done) {
+  test('Optional/Required mixed keys  all valid', function(done) {
     var sut = new Schema([
       [Optional('name'),  isString()],
       [Required('label'),  isString()],
@@ -48,9 +48,9 @@ suite("Test Schema.validate", function() {
       [Required('from'),  isString()],
       [Required('to'),  isString()],
     ]);
-    sut.throw_errors = true
+    sut.throw_errors = true;
     const expectation = {
-      label: "Figs",
+      label: 'Figs',
       from: '$0.75',
       to: '$1.00'
     };
@@ -58,7 +58,7 @@ suite("Test Schema.validate", function() {
     done();
   });
 
-  test("several keys one invalid.", function(done) {
+  test('several keys one invalid.', function(done) {
     var sut = new Schema([
       [Optional('name'),  isString()],
       [Required('label'),  isString()],
@@ -66,19 +66,19 @@ suite("Test Schema.validate", function() {
       [Required('from'),  isString()],
       [Required('to'),  isString()],
     ]);
-    sut.throw_errors = true
+    sut.throw_errors = true;
     const arg = {
       label: [],
       from: '$0.75',
       to: '$1.00'
     };
     const expectation = new Error('"" is not a string.');
-    expectation.isSchemaError = true
+    expectation.isSchemaError = true;
     assert.throws(()=>sut.validate(arg), expectation);
     done();
   });
 
-  test("multiple validators one invalid.", function(done) {
+  test('multiple validators one invalid.', function(done) {
     var sut = new Schema([
       [Optional('name'),  isString()],
       [Required('label'),  All(mustNotMatch('name'), isString())],
@@ -86,7 +86,7 @@ suite("Test Schema.validate", function() {
       [Required('from'),  isString()],
       [Required('to'),  isString()],
     ]);
-    sut.throw_errors = true
+    sut.throw_errors = true;
     const arg = {
       name: 'dolla',
       label: 'dolla',
@@ -94,7 +94,7 @@ suite("Test Schema.validate", function() {
       to: '$1.00'
     };
     const expectation = new Error('"dolla" is identical to value of "name"');
-    expectation.isSchemaError = true
+    expectation.isSchemaError = true;
     assert.throws(()=>sut.validate(arg), expectation);
     done();
   });

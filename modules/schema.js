@@ -1,7 +1,7 @@
 // Schema definition
 
 // local requires
-var makeSchemaError = require('./error.js').makeSchemaError
+var makeSchemaError = require('./error.js').makeSchemaError;
 
 module.exports = {
   Schema: function(definition) {
@@ -27,14 +27,14 @@ module.exports = {
           self.errors.push(err);
         }
       }
-    }
+    };
 
     self.validate = function(obj) {
       // empty objects aren't valid
       if(obj && Object.keys(obj).length === 0 && obj.constructor === Object) {
         throw makeSchemaError('An empty object isn\'t valid.');
-      };
-      var valid = {}
+      }
+      var valid = {};
       // keys not in definition are automatically dropped.
       for (var [kobj, validator] of self._map.entries()) {
         // entire obj is passed in in-case validator wants
@@ -44,25 +44,25 @@ module.exports = {
         }
         catch(err) {
           if(err.is_optional) {
-            continue
+            continue;
           }
           if(self.throw_errors) {
             throw err;
           }
           else {
             self.errors.push(err);
-            continue
+            continue;
           }
         }
         if(validator.is_schema) {
-          valid[k] = validator.validate(obj[k], obj)
+          valid[k] = validator.validate(obj[k], obj);
         }
         else {
           let result; 
           // run multiple validators
-          if(validator.constructor.name === "Collection") {
+          if(validator.constructor.name === 'Collection') {
             try {
-              result = validator.outcome(k, obj)
+              result = validator.outcome(k, obj);
             }
             catch (err) {
               if(self.throw_errors) {
@@ -74,12 +74,12 @@ module.exports = {
             }
           }
           else {
-            result = self._run_validator(k, validator, obj)
+            result = self._run_validator(k, validator, obj);
           }
-          valid[k] = result
+          valid[k] = result;
         }
       }
-      return valid
-    }
+      return valid;
+    };
   }
-}
+};

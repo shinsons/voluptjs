@@ -1,10 +1,7 @@
 {
 	"rules": {
 		"no-console": 0,
-    "indent": [
-      "error",
-      2
-    ],
+		"indent": 2,
 		"quotes": [
 			2,
 			"single"
@@ -23,5 +20,9 @@
 		"node": true,
     "mocha": true
 	},
+  "ecmaFeatures": {
+		"modules": true,
+		"experimentalObjectRestSpread": true
+  },
 	"extends": "eslint:recommended"
 }

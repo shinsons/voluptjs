@@ -10,23 +10,23 @@ const {
   oneOf,
   All,
   Any
-} = require('../../index.js')
-const Schema = require('../../index.js').Schema
-const Required = require('../../index.js').Required
+} = require('../../index.js');
+const Schema = require('../../index.js').Schema;
+const Required = require('../../index.js').Required;
 
-suite("Test collections.All", function() {
+suite('Test collections.All', function() {
   const sut = new Schema([
     [Required('liberty'), All(isString(), oneOf(['death', 'liberty']))]
   ]);
-  sut.throw_errors = true
+  sut.throw_errors = true;
 
-  test("valid", function(done) {
+  test('valid', function(done) {
     const expectation = {liberty: 'death'};
     assert.deepStrictEqual(sut.validate(expectation), expectation);
     done();
   });
 
-  test("invalid", function(done) {
+  test('invalid', function(done) {
     const expectation = new Error('"wagon" is not one of death,liberty');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate({liberty: 'wagon'}), expectation);
@@ -35,20 +35,20 @@ suite("Test collections.All", function() {
 
 });
 
-suite("Test collections.Any", function() {
+suite('Test collections.Any', function() {
 
   const sut = new Schema([
     [Required('message'), Any(isNumber(), isString())]
   ]);
-  sut.throw_errors = true
+  sut.throw_errors = true;
 
-  test("valid", function(done) {
+  test('valid', function(done) {
     const expectation = {message: 123.45};
     assert.deepStrictEqual(sut.validate(expectation), expectation);
     done();
   });
 
-  test("invalid", function(done) {
+  test('invalid', function(done) {
     const expectation = new Error('"" is not a string.');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate({message: []}), expectation);

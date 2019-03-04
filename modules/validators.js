@@ -14,137 +14,183 @@ module.exports = {
     /**
      * Returns function that determines if a value is null or not.
      * @param {any} val the value from the configured field.
-     * @param {object}} obj the object being validated.
      * @returns (function} the validation function.
      */
-    function _isnull(val, obj) {
+    function _isnull(val) {
       if (val === null) {
-        return val
+        return val;
       }
       else {
         throw makeSchemaError('"' + val + '" is not null.');
       }
     }
-    return _isnull
+    return _isnull;
   },
 
   isBoolean: function() {
     /**
      * Returns function that determines if a value is boolen or not
      * @param {any} val the value from the configured field.
-     * @param {object}} obj the object being validated.
      * @returns (function} the validation function.
      */
-    function _isboolean(val, obj) {
+    function _isboolean(val) {
       if (typeof val === 'boolean') {
-        return val
+        return val;
       }
       else {
         throw makeSchemaError('"' + val + '" is not a boolean.');
       }
     }
-    return _isboolean
+    return _isboolean;
   },
 
   isArray: function() {
-    function _isarray(val, obj) {
+    /**
+     * Returns function that determines if a value is an array or not.
+     * @param {any} val the value from the configured field.
+     * @returns (function} the validation function.
+     */
+    function _isarray(val) {
       if ({}.toString.call(val) === '[object Array]') {
-        return val
+        return val;
       }
       else {
         throw makeSchemaError('"' + val + '" is not an array.');
       }
     }
-    return _isarray
+    return _isarray;
   },
 
 
   isString: function() {
-    function _isstring(val, obj) {
+    /**
+     * Returns function that determines if a value is a string or not.
+     * @param {any} val the value from the configured field.
+     * @returns (function} the validation function.
+     */
+    function _isstring(val) {
       if (typeof val === 'string') {
-        return val
+        return val;
       }
       else {
         throw makeSchemaError('"' + val + '" is not a string.');
       }
     }
-    return _isstring
+    return _isstring;
   },
 
   isDate: function() {
-    function _isdate(val, obj) {
+    /**
+     * Returns function that determines if a value can be coerced into a
+     * momentjs object or not.
+     * @param {any} val the value from the configured field.
+     * @returns (function} the validation function.
+     */
+    function _isdate(val) {
       if (!moment(val).isValid()) {
         throw makeSchemaError('"' + val + '" is not a valid date.');
       }
-      return val
+      return val;
     }
-    return _isdate
+    return _isdate;
   },
 
   isInteger: function() {
-    function _isinteger(val, obj) {
+    /**
+     * Returns function that determines if a value is an integer or not.
+     * @param {any} val the value from the configured field.
+     * @returns (function} the validation function.
+     */
+    function _isinteger(val) {
       if (typeof val === 'number' && !isNaN(val) && val % 1 === 0) {
-        return val
+        return val;
       }
       else {
         throw makeSchemaError('"' + val + '" is not an integer.');
       }
     }
-    return _isinteger
+    return _isinteger;
   },
 
   isNumber: function() {
-    function _isnumber(val, obj) {
+    /**
+     * Returns function that determines if a value is a Javascript Number or not.
+     * @param {any} val the value from the configured field.
+     * @returns (function} the validation function.
+     */
+    function _isnumber(val) {
       if (typeof val === 'number' && !isNaN(val)) {
-        return val
+        return val;
       }
       else {
         throw makeSchemaError('"' + val + '" is not a number.');
       }
     }
-    return _isnumber
+    return _isnumber;
   },
 
   oneOf: function(def) {
-    function _oneof(val, obj) {
+    /**
+     * Returns function that determines if a value is one of the provided values in
+     * the passed in array.
+     * @param {any} val the value from the configured field.
+     * @returns (function} the validation function.
+     */
+    function _oneof(val) {
       if (def.indexOf(val) === -1) {
         throw makeSchemaError('"' + val + '" is not one of ' + def.toString());
       }
-      return val
+      return val;
     }
-    return _oneof
+    return _oneof;
   },
 
   isHTML: function() {
-    function _ishtml(val, obj) {
+    /**
+     * Returns function that determines if a value appears to be an HTML tag.
+     * @param {any} val the value from the configured field.
+     * @returns (function} the validation function.
+     */
+    function _ishtml(val) {
       if(typeof val === 'string' && val.match(/<\/|\/>|<br>/)) {
-        return val
+        return val;
       }
-      throw makeSchemaError('"' + val + '" does not appear to have any html tags.')
+      throw makeSchemaError('"' + val + '" does not appear to have any html tags.');
     }
-    return _ishtml
+    return _ishtml;
   },
 
-  // values of this field and passed in field must match.
   mustMatch: function(field_name) {
+    /**
+     * Returns function that determines if the value matches the value of the named
+     * field in the same object.
+     * @param {any} val the value from the configured field.
+     * @returns (function} the validation function.
+     */
     function _mustmatch(val, obj) {
       if(obj[field_name] !== val) {
-        throw makeSchemaError('"' + val + '" is not identical to value of "' + field_name + '"')
+        throw makeSchemaError('"' + val + '" is not identical to value of "' + field_name + '"');
       }
-      return val
+      return val;
     }
-    return _mustmatch
+    return _mustmatch;
   },
-  // values of this field and passed in field must not match.
+
   mustNotMatch: function(field_name) {
+    /**
+     * Returns function that determines if the value does not match  the value of the named
+     * field in the same object.
+     * @param {any} val the value from the configured field.
+     * @returns (function} the validation function.
+     */
     function _mustnotmatch(val, obj) {
       // If a property doesn't exist/undefined then it by
       // definition doesn't match ....
       if(obj[field_name] === val) {
-        throw makeSchemaError('"' + val + '" is identical to value of "' + field_name + '"')
+        throw makeSchemaError('"' + val + '" is identical to value of "' + field_name + '"');
       }
-      return val
+      return val;
     }
-    return _mustnotmatch
+    return _mustnotmatch;
   }
 };
