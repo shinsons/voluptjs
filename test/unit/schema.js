@@ -10,6 +10,15 @@ var {Required, Optional} = require('../../index.js');
 
 suite('Test Schema.validate', function() {
 
+  test('null object not valid.', function(done) {
+    const sut = new Schema([[Required('one'), isNull()]]);
+    sut.throw_errors = true;
+    const expectation = new Error('Property "one" is required.');
+    expectation.isSchemaError = true;
+    assert.throws(() => sut.validate(null), expectation)
+    done();
+  });
+
   test('empty object', function(done) {
     var sut = new Schema([
       [Optional('name'),  isString()],
