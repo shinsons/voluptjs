@@ -15,7 +15,7 @@ suite('Test Schema.validate', function() {
     sut.throw_errors = true;
     const expectation = new Error('Property "one" is required.');
     expectation.isSchemaError = true;
-    assert.throws(() => sut.validate(null), expectation)
+    assert.throws(() => sut.validate(null), expectation);
     done();
   });
 
