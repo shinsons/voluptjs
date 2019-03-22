@@ -1,11 +1,13 @@
 var {
   isNull,
+  isBoolean,
   isArray,
   isString,
   isDate,
   isInteger,
   isNumber,
   oneOf,
+  isHTML,
   mustMatch,
   mustNotMatch
 } = require('./modules/validators.js');
@@ -15,12 +17,14 @@ var { Any, All } = require('./modules/collections.js');
 
 module.exports = {
   isNull,
+  isBoolean,
   isArray,
   isString,
   isDate,
   isInteger,
   isNumber,
   oneOf,
+  isHTML,
   mustMatch,
   mustNotMatch,
   Schema,
