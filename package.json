@@ -4,8 +4,8 @@
     "description": "A work-a-like javascript clone of python voluptuous (https://pypi.org/project/voluptuous)",
     "main": "index.js",
     "scripts": {
-      "lint": "eslint .",
-      "test": "mocha --ui tdd --recursive"
+        "lint": "eslint .",
+        "test": "mocha --ui tdd --recursive"
     },
     "repository": {
         "type": "git",
