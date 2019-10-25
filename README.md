@@ -1,4 +1,4 @@
-# voluptjs [![Build Status](https://travis-ci.org/shinsons/voluptjs.svg?branch=master)](https://travis-ci.org/shinsons/voluptjs)
+# voluptjs [![Actions Status](https://xxx.execute-api.us-west-2.amazonaws.com/production/badge/shinsons/voluptjs)](https://xxx.execute-api.us-west-2.amazonaws.com/production/results/shinsons/voluptjs)
 A work-a-like javascript clone of python voluptuous (https://pypi.org/project/voluptuous)
 
 ## Install
