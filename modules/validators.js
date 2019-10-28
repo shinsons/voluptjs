@@ -9,7 +9,7 @@ const moment = require('moment');
 moment.suppressDeprecationWarnings = true;
 
 // local requires
-var makeSchemaError = require('./error.js').makeSchemaError;
+const makeSchemaError = require('./error.js').makeSchemaError;
 
 module.exports = {
   
