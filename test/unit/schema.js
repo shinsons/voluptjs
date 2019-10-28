@@ -81,7 +81,7 @@ suite('Test Schema.validate', function() {
       from: '$0.75',
       to: '$1.00'
     };
-    const expectation = new Error('"" is not a string.');
+    const expectation = new Error('label: "" is not a string.');
     expectation.isSchemaError = true;
     assert.throws(()=>sut.validate(arg), expectation);
     done();
@@ -102,7 +102,7 @@ suite('Test Schema.validate', function() {
       from: '$0.75',
       to: '$1.00'
     };
-    const expectation = new Error('"dolla" is identical to value of "name"');
+    const expectation = new Error('label: "dolla" is identical to value of "name"');
     expectation.isSchemaError = true;
     assert.throws(()=>sut.validate(arg), expectation);
     done();

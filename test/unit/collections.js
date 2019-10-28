@@ -27,7 +27,7 @@ suite('Test collections.All', function() {
   });
 
   test('invalid', function(done) {
-    const expectation = new Error('"wagon" is not one of death,liberty');
+    const expectation = new Error('liberty: "wagon" is not one of death,liberty');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate({liberty: 'wagon'}), expectation);
     done();
@@ -49,7 +49,7 @@ suite('Test collections.Any', function() {
   });
 
   test('invalid', function(done) {
-    const expectation = new Error('"" is not a string.');
+    const expectation = new Error('message: "" is not a string.');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate({message: []}), expectation);
     done();

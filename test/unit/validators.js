@@ -32,7 +32,7 @@ suite('Test validators.isArray', function() {
   });
 
   test('invalid', function(done) {
-    const expectation = new Error('"1" is not an array.');
+    const expectation = new Error('arr: "1" is not an array.');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate({arr: 1}), expectation);
     done();
@@ -54,7 +54,7 @@ suite('Test validators.isNumber', function() {
   });
 
   test('invalid', function(done) {
-    const expectation = new Error('"" is not a number.');
+    const expectation = new Error('message: "" is not a number.');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate({message: []}), expectation);
     done();
@@ -76,7 +76,7 @@ suite('Test validators.isInteger', function() {
   });
 
   test('invalid', function(done) {
-    const expectation = new Error('"123.45" is not an integer.');
+    const expectation = new Error('danumber: "123.45" is not an integer.');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate({danumber: 123.45}), expectation);
     done();
@@ -98,7 +98,7 @@ suite('Test validators.isString', function() {
   });
 
   test('invalid', function(done) {
-    const expectation = new Error('"" is not a string.');
+    const expectation = new Error('message: "" is not a string.');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate({message: []}), expectation);
     done();
@@ -120,7 +120,9 @@ suite('Test validators.isDate', function() {
   });
 
   test('invalid', function(done) {
-    const expectation = new Error('"Harry Halladay" is not a valid date.');
+    const expectation = new Error(
+      'date: "Harry Halladay" is not a valid date.'
+    );
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate({date: 'Harry Halladay'}), expectation);
     done();
@@ -142,7 +144,7 @@ suite('Test validators.oneOf', function() {
   });
 
   test('invalid', function(done) {
-    const expectation = new Error('"" is not one of death,liberty');
+    const expectation = new Error('liberty: "" is not one of death,liberty');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate({liberty: []}), expectation);
     done();
@@ -166,9 +168,13 @@ suite('Test validators.mustMatch', function() {
   });
 
   test('invalid', function(done) {
-    const expectation = new Error('"pillz" is not identical to value of "giveme"');
+    const expectation = new Error(
+      'liberty: "pillz" is not identical to value of "giveme"'
+    );
     expectation.isSchemaError = true;
-    assert.throws(() => sut.validate({liberty: 'pillz', giveme: []}), expectation);
+    assert.throws(() => sut.validate(
+      {liberty: 'pillz', giveme: []}), expectation
+    );
     done();
   });
 
@@ -190,9 +196,13 @@ suite('Test validators.mustNotMatch', function() {
   });
 
   test('invalid', function(done) {
-    const expectation = new Error('"death" is identical to value of "giveme"');
+    const expectation = new Error(
+      'liberty: "death" is identical to value of "giveme"'
+    );
     expectation.isSchemaError = true;
-    assert.throws(() => sut.validate({liberty: 'death', giveme: 'death'}), expectation);
+    assert.throws(() => sut.validate(
+      {liberty: 'death', giveme: 'death'}), expectation
+    );
     done();
   });
 

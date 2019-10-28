@@ -17,7 +17,7 @@ module.exports = {
 
     self._run_validator = function(property, validator, obj) {
       try {
-        return validator(obj[property], obj);
+        return validator(obj[property], obj, property);
       }
       catch(err) {
         if(self.throw_errors) {
@@ -37,7 +37,7 @@ module.exports = {
       var valid = {};
       // keys not in definition are automatically dropped.
       for (var [kobj, validator] of self._map.entries()) {
-        // entire obj is passed in in-case validator wants
+        // entire obj is passed in, in case validator wants
         // to inspect other properties to determine validity.
         try {
           var k = kobj(obj);
