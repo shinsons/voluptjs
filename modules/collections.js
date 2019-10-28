@@ -10,7 +10,7 @@ function Collection() {
     let errors = [];
     for(let i in self.validators) {
       try {
-        self.validators[i](obj[property], obj);
+        self.validators[i](obj[property], obj, property);
       }
       catch(err) {
         errors.push(err);
