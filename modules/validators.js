@@ -3,7 +3,10 @@
  */
 
 // third-party requires
-var moment = require('moment');
+const moment = require('moment');
+
+// moment configuration
+moment.suppressDeprecationWarnings = true;
 
 // local requires
 var makeSchemaError = require('./error.js').makeSchemaError;
@@ -90,16 +93,10 @@ module.exports = {
       const err = makeSchemaError(
         prop_name + ': "' + val + '" is not a valid date.'
       );
-      // swallow Moment errors
-      try {
-        if (!moment(val).isValid()) {
-          throw err;
-        }
-        return val;
+      if (!moment(val).isValid()) {
+        throw err;
       }
-      catch(e) {
-        throw err
-      }
+      return val;
     }
     return _isdate;
   },
