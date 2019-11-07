@@ -1,26 +1,27 @@
 // Tests for validators.js
 
 // Third-party requires
-var assert = require('assert');
+const assert = require('assert');
 
 // sut requires
-var {
+const {
   isArray,
   isString,
   isDate,
   isInteger,
   isNumber,
+  matchRe,
   oneOf,
   mustMatch,
   mustNotMatch,
 
 } = require('../../index.js');
-var Schema = require('../../index.js').Schema;
-var {Required, Optional} = require('../../index.js');
+const Schema = require('../../index.js').Schema;
+const {Required, Optional} = require('../../index.js');
 
 suite('Test validators.isArray', function() {
 
-  var sut = new Schema([
+  const sut = new Schema([
     [Required('arr'), isArray()]
   ]);
   sut.throw_errors = true;
@@ -42,7 +43,7 @@ suite('Test validators.isArray', function() {
 
 suite('Test validators.isNumber', function() {
 
-  var sut = new Schema([
+  const sut = new Schema([
     [Required('message'), isNumber()]
   ]);
   sut.throw_errors = true;
@@ -64,7 +65,7 @@ suite('Test validators.isNumber', function() {
 
 suite('Test validators.isInteger', function() {
 
-  var sut = new Schema([
+  const sut = new Schema([
     [Required('danumber'), isInteger()]
   ]);
   sut.throw_errors = true;
@@ -86,7 +87,7 @@ suite('Test validators.isInteger', function() {
 
 suite('Test validators.isString', function() {
 
-  var sut = new Schema([
+  const sut = new Schema([
     [Required('message'), isString()]
   ]);
   sut.throw_errors = true;
@@ -108,7 +109,7 @@ suite('Test validators.isString', function() {
 
 suite('Test validators.isDate', function() {
 
-  var sut = new Schema([
+  const sut = new Schema([
     [Required('date'), isDate()]
   ]);
   sut.throw_errors = true;
@@ -130,9 +131,50 @@ suite('Test validators.isDate', function() {
 
 });
 
+suite('Test validators.matchRe', function() {
+
+  const sut = new Schema([
+    [Required('re'), matchRe(/^.+s$/)]
+  ]);
+  sut.throw_errors = true;
+
+  test('not regular expression', function(done) {
+    try {
+      const invalid = new Schema([
+        [Required('re'), matchRe('/^.+s')]
+      ]);
+      invalid.throw_errors = true;
+      assert.fail('Invalid RegExp did not throw.');
+      done();
+    }
+    catch(e) {
+      assert.strictEqual(
+        e.message, 'the value "/^.+s" is not a regular expression.'
+      );
+      done();
+    }
+  });
+
+  test('valid', function(done) {
+    const expectation = {re: 'poops'};
+    assert.deepStrictEqual(sut.validate(expectation), expectation);
+    done();
+  });
+
+  test('invalid', function(done) {
+    const expectation = new Error(
+      're: "1000" does not match /^.+s$/.'
+    );
+    expectation.isSchemaError = true;
+    assert.throws(() => sut.validate({re: 1000}), expectation);
+    done();
+  });
+
+});
+
 suite('Test validators.oneOf', function() {
 
-  var sut = new Schema([
+  const sut = new Schema([
     [Required('liberty'), oneOf(['death', 'liberty'])]
   ]);
   sut.throw_errors = true;
@@ -154,7 +196,7 @@ suite('Test validators.oneOf', function() {
 
 suite('Test validators.mustMatch', function() {
 
-  var sut = new Schema([
+  const sut = new Schema([
     [Required('liberty'), mustMatch('giveme')],
     [Optional('giveme'), isString()]
 
@@ -182,7 +224,7 @@ suite('Test validators.mustMatch', function() {
 
 suite('Test validators.mustNotMatch', function() {
 
-  var sut = new Schema([
+  const sut = new Schema([
     [Required('liberty'), mustNotMatch('giveme')],
     [Optional('giveme'), isString()]
 

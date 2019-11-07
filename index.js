@@ -6,13 +6,14 @@ var {
   isDate,
   isInteger,
   isNumber,
+  matchRe,
   oneOf,
   isHTML,
   mustMatch,
   mustNotMatch
 } = require('./modules/validators.js');
 var Schema = require('./modules/schema.js').Schema;
-var { Required, Optional, AtLeastNOf } = require('./modules/properties.js');
+var { Required, Optional, OneOf } = require('./modules/properties.js');
 var { Any, All } = require('./modules/collections.js');
 
 module.exports = {
@@ -23,6 +24,7 @@ module.exports = {
   isDate,
   isInteger,
   isNumber,
+  matchRe,
   oneOf,
   isHTML,
   mustMatch,
@@ -30,7 +32,7 @@ module.exports = {
   Schema,
   Required,
   Optional,
-  AtLeastNOf,
+  OneOf,
   All,
   Any
 };

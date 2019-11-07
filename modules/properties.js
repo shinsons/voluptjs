@@ -5,6 +5,18 @@ var makeSchemaError = require('./error.js').makeSchemaError;
 
 
 module.exports = {
+  OneOf: function(regex) {
+    function _oneof(obj) {
+      for(const p in obj) {
+        if(regex.test(p)) {
+          return p;
+        }
+      }
+      throw makeSchemaError(`No property matches RegExp ${regex}.`);
+    }
+    return _oneof;
+  }, 
+
   Required: function(field_name) {
     function _required(obj) {
       if(!obj || !obj.hasOwnProperty(field_name)) {

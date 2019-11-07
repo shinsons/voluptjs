@@ -1,12 +1,12 @@
 // Tests for schema.js
 
 // Third-party requires
-var assert = require('assert');
+const assert = require('assert');
 
 // sut require
-var Schema = require('../../index.js').Schema;
-var {isString, mustNotMatch, isNull, Any, All} = require('../../index.js');
-var {Required, Optional} = require('../../index.js');
+const Schema = require('../../index.js').Schema;
+const {isString, mustNotMatch, isNull, Any, All} = require('../../index.js');
+const {Required, Optional} = require('../../index.js');
 
 suite('Test Schema.validate', function() {
 
@@ -20,7 +20,7 @@ suite('Test Schema.validate', function() {
   });
 
   test('empty object', function(done) {
-    var sut = new Schema([
+    const sut = new Schema([
       [Optional('name'),  isString()],
       [Optional('label'),  isString()],
       [Optional('group'),  isString()],
@@ -35,7 +35,7 @@ suite('Test Schema.validate', function() {
   });
 
   test('null valid', function(done) {
-    var sut = new Schema([
+    const sut = new Schema([
       [Optional('name'),  Any(isNull(), isString())],
       [Optional('label'),  isString()]
     ]);
@@ -50,7 +50,7 @@ suite('Test Schema.validate', function() {
   });
 
   test('Optional/Required mixed keys  all valid', function(done) {
-    var sut = new Schema([
+    const sut = new Schema([
       [Optional('name'),  isString()],
       [Required('label'),  isString()],
       [Optional('group'),  isString()],
@@ -68,7 +68,7 @@ suite('Test Schema.validate', function() {
   });
 
   test('several keys one invalid.', function(done) {
-    var sut = new Schema([
+    const sut = new Schema([
       [Optional('name'),  isString()],
       [Required('label'),  isString()],
       [Optional('group'),  isString()],
@@ -88,7 +88,7 @@ suite('Test Schema.validate', function() {
   });
 
   test('multiple validators one invalid.', function(done) {
-    var sut = new Schema([
+    const sut = new Schema([
       [Optional('name'),  isString()],
       [Required('label'),  All(mustNotMatch('name'), isString())],
       [Optional('group'),  isString()],

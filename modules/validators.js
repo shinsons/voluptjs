@@ -138,6 +138,33 @@ module.exports = {
     return _isnumber;
   },
 
+  matchRe: function(re) {
+    /**
+     * Returns function that determines if a value matches the configured
+     * regular expression or not.
+     * @param {RegExp} re the regular expression used to determine if the 
+     * value passed into the validation function matches or not.
+     * @returns (function} the validation function that uses the regex to 
+     * determine a successful match or not.
+     */
+    function _matchRe(val, schema, prop_name) {
+      if (re.test(val)) {
+        return val;
+      }
+      else {
+        throw makeSchemaError(prop_name + ': "' + val + 
+          '" does not match ' + re.toString() + '.'
+        );
+      }
+    }
+    if(re instanceof RegExp === false) {
+      throw new Error('the value "' + re.toString() + 
+        '" is not a regular expression.'
+      );
+    }
+    return _matchRe;
+  },
+
   oneOf: function(def) {
     /**
      * Returns function that determines if a value is one of the provided 
