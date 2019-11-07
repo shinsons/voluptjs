@@ -1,6 +1,6 @@
 {
     "name": "voluptjs",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "A work-a-like javascript clone of python voluptuous (https://pypi.org/project/voluptuous)",
     "main": "index.js",
     "scripts": {
