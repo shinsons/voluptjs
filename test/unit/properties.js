@@ -46,7 +46,7 @@ suite('Test properties.Optional', function() {
     assert.strictEqual(
       Array.from(sut._map.entries())[0][0].field,
       'name'
-    )
+    );
     done();
   });
 });
