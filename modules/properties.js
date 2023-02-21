@@ -14,6 +14,7 @@ module.exports = {
       }
       throw makeSchemaError(`No property matches RegExp ${regex}.`);
     }
+    _oneof.field = regex;
     return _oneof;
   }, 
 
@@ -24,6 +25,7 @@ module.exports = {
       }
       return field_name;
     }
+    _required.field = field_name;
     return _required;
   },
 
@@ -36,6 +38,7 @@ module.exports = {
       }
       return field_name;
     }
+    _optional.field = field_name;
     return _optional;
   }
 };

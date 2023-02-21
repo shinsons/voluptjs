@@ -41,6 +41,14 @@ suite('Test properties.Optional', function() {
     assert.throws(() => sut.validate(payload), expectation);
     done();
   });
+
+  test('field property present', function(done) {
+    assert.strictEqual(
+      Array.from(sut._map.entries())[0][0].field,
+      'name'
+    );
+    done();
+  });
 });
 
 suite('Test properties.Required', function() {
@@ -64,6 +72,10 @@ suite('Test properties.Required', function() {
     const expectation = new Error('Property "label" is required.');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate(payload), expectation);
+    assert.strictEqual(
+      Array.from(sut._map.entries())[0][0].field,
+      'name'
+    );
     done();
   });
 });
@@ -85,6 +97,10 @@ suite('Test properties.OneOf', function() {
     };
     sut.throw_errors = true;
     assert.deepStrictEqual(sut.validate(expectation), expectation);
+    assert.equal(
+      Array.from(sut._map.entries())[1][0].field.toString(),
+      /^\w{2}$/.toString()
+    );
     done();
   });
   
