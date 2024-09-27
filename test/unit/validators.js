@@ -198,9 +198,9 @@ suite('Test validators.oneOf with callable', function() {
   function DoctorEvil() {
     this.name = 'Evil';
     this.threaten = function() {
-      return ['one', 'million', 'dollars']
-    }
-  };
+      return ['one', 'million', 'dollars'];
+    };
+  }
   const evilette = new DoctorEvil();
   const sut = new Schema([
     [Required('line'), oneOf(evilette.threaten.bind(evilette))]
