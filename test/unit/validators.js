@@ -194,6 +194,34 @@ suite('Test validators.oneOf', function() {
 
 });
 
+suite('Test validators.oneOf with callable', function() {
+  function DoctorEvil() {
+    this.name = 'Evil';
+    this.threaten = function() {
+      return ['one', 'million', 'dollars']
+    }
+  };
+  const evilette = new DoctorEvil();
+  const sut = new Schema([
+    [Required('line'), oneOf(evilette.threaten.bind(evilette))]
+  ]);
+  sut.throw_errors = true;
+
+  test('valid', function(done) {
+    const expectation = {line: 'million'};
+    assert.deepStrictEqual(sut.validate(expectation), expectation);
+    done();
+  });
+
+  test('invalid', function(done) {
+    const expectation = new Error('line: "yeah" is not one of one,million,dollars');
+    expectation.isSchemaError = true;
+    assert.throws(() => sut.validate({line: 'yeah'}), expectation);
+    done();
+  });
+
+});
+
 suite('Test validators.mustMatch', function() {
 
   const sut = new Schema([

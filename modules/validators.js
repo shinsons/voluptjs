@@ -168,11 +168,14 @@ module.exports = {
   oneOf: function(def) {
     /**
      * Returns function that determines if a value is one of the provided 
-     * values in the passed in array.
+     * values in the passed in array or callable that returns an array.
      * @param {any} val the value from the configured field.
      * @returns (function} the validation function.
      */
     function _oneof(val, schema, prop_name) {
+      if(def instanceof Function) {
+        def = def();
+      }
       if (def.indexOf(val) === -1) {
         throw makeSchemaError(
           prop_name + ': "' + val + '" is not one of ' + def.toString());
