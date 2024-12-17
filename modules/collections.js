@@ -53,4 +53,4 @@ function Any() {
   return new _any();
 }
 
-module.exports = { All, Any };
+export { All, Any };
