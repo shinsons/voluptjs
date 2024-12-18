@@ -1,34 +1,29 @@
 {
-    "name": "voluptjs",
-    "version": "0.0.8",
-    "description": "A work-a-like javascript clone of python voluptuous (https://pypi.org/project/voluptuous)",
-    "main": "index.js",
-    "scripts": {
-        "lint": "eslint .",
-        "test": "mocha --ui tdd --recursive"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/shinsons/voluptjs.git"
-    },
-    "keywords": [
-        "voluptuous",
-        "javascript",
-        "schema",
-        "validation",
-        "node"
-    ],
-    "author": "Nathen Hinson <nathen.hinson@gmail.com> ",
-    "license": "MIT",
-    "dependencies": {
-        "moment": "^2.29.4"
-    },
-    "bugs": {
-        "url": "https://github.com/shinsons/voluptjs/issues"
-    },
-    "homepage": "https://github.com/shinsons/voluptjs#readme",
-    "devDependencies": {
-        "eslint": "^5.16.0",
-        "mocha": "^10.2.0"
-    }
+  "name": "voluptjs",
+  "version": "0.0.9",
+  "description": "A work-a-like javascript clone of python voluptuous (https://pypi.org/project/voluptuous)",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "node --test"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shinsons/voluptjs.git"
+  },
+  "keywords": [
+    "voluptuous",
+    "schema",
+    "validation"
+  ],
+  "author": "Nathen Hinson <nathen.hinson@gmail.com> ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shinsons/voluptjs/issues"
+  },
+  "homepage": "https://github.com/shinsons/voluptjs#readme",
+  "devDependencies": {
+    "eslint": "^9.5.0"
+  }
 }

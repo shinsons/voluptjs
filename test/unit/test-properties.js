@@ -1,24 +1,33 @@
 // Tests for properties.js
 
-// Third-party requires
-const assert = require('assert');
+// Built-in imports
+import assert from 'assert';
+import  test from 'node:test';
 
-// sut requires
-const { isString } = require('../../index.js');
-const Schema = require('../../index.js').Schema;
-const { Required, Optional, OneOf } = require('../../index.js');
+// sut imports 
+import {
+  isString,
+  Required,
+  Optional,
+  OneOf,
+  Schema
+} from '../../index.js';
 
-suite('Test properties.Optional', function() {
-  const sut = new Schema([
-    [Optional('name'),  isString()],
-    [Required('label'),  isString()],
-    [Optional('group'),  isString()],
-    [Required('from'),  isString()],
-    [Required('to'),  isString()],
-  ]);
-  sut.throw_errors = true;
+test('Test properties.Optional', async (t) => {
 
-  test('field present, another not present', function(done) {
+  let sut;
+  t.before(() => { 
+    sut = new Schema([
+      [Optional('name'),  isString()],
+      [Required('label'),  isString()],
+      [Optional('group'),  isString()],
+      [Required('from'),  isString()],
+      [Required('to'),  isString()],
+    ]);
+    sut.throw_errors = true;
+  });
+
+  await t.test('field present, another not present', () => {
     const expectation = {
       name: 'oz',
       label: 'yes',
@@ -26,10 +35,9 @@ suite('Test properties.Optional', function() {
       to: '$1.00'
     };
     assert.deepStrictEqual(sut.validate(expectation), expectation);
-    done();
   });
 
-  test('field present invalid', function(done) {
+  await t.test('field present invalid', () => {
     const payload = {
       name: 1234,
       label: 'yes',
@@ -39,21 +47,19 @@ suite('Test properties.Optional', function() {
     const expectation = new Error('name: "1234" is not a string.');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate(payload), expectation);
-    done();
   });
 
-  test('field property present', function(done) {
+  await t.test('field property present', () => {
     assert.strictEqual(
       Array.from(sut._map.entries())[0][0].field,
       'name'
     );
-    done();
   });
 });
 
-suite('Test properties.Required', function() {
+test('Test properties.Required', async (t) => {
 
-  test('field missing', function(done) {
+  await t.test('field missing', () => {
    
     const sut = new Schema([
       [Optional('name'),  isString()],
@@ -76,13 +82,12 @@ suite('Test properties.Required', function() {
       Array.from(sut._map.entries())[0][0].field,
       'name'
     );
-    done();
   });
 });
 
-suite('Test properties.OneOf', function() {
+test('Test properties.OneOf', async (t) => {
 
-  test('regex field matches and valid', function(done) {
+  await t.test('regex field matches and valid', () => {
     
     const sut = new Schema([
       [Optional('name'),  isString()],
@@ -101,10 +106,9 @@ suite('Test properties.OneOf', function() {
       Array.from(sut._map.entries())[1][0].field.toString(),
       /^\w{2}$/.toString()
     );
-    done();
   });
   
-  test('regex field no match  and valid', function(done) {
+  await t.test('regex field no match  and valid', () => {
     
     const sut = new Schema([
       [Optional('name'),  isString()],
@@ -121,11 +125,9 @@ suite('Test properties.OneOf', function() {
     const expectation = new Error('No property matches RegExp /^\\w{2}$/.');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate(payload), expectation);
-    done();
-
   });
   
-  test('multiple regex field matches, one valid, one not.', function(done) {
+  await t.test('multiple regex field matches, one valid, one not.', () => {
     
     const sut = new Schema([
       [Optional('name'),  isString()],
@@ -143,7 +145,5 @@ suite('Test properties.OneOf', function() {
     const expectation = new Error('to: "1234" is not a string.');
     expectation.isSchemaError = true;
     assert.throws(() => sut.validate(payload), expectation);
-    done();
-
   });
 });
