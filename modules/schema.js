@@ -7,14 +7,18 @@ class Schema {
   
   constructor(definition) {
     this.is_schema = true;
-    this.throw_errors = false;
+    this.throw_errors = true;
     this.errors = [];
     this._map = new Map(definition);
   }
 
   _run_validator(property, validator, obj) {
     if(validator.is_schema) {
-      return validator.validate(obj[property], obj);
+      // re-declare this property to ensure that no one else has
+      // set this to false which will not produce proper behavior in 
+      // nested schemas.
+      validator.throw_errors = true;
+      return validator.validate(obj[property]);
     }
     // run multiple validators
     if(validator.constructor.name === 'Collection') {

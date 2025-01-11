@@ -178,10 +178,69 @@ export function oneOf(def) {
   return _oneof;
 };
 
+export function isSubSet(def) {
+  /**
+   * Returns function that determines if the provided array, cast into a Set
+   * is a complete subset of the provided Set.
+   * @param {array} array that will be used to perform the subset operation.
+   * @returns (function} the validation function.
+   */
+  const definitionSet = new Set(def);
+  function _isSubSet(val, schema, prop_name) {
+    const valueArray = Array.from(new Set(val).values());
+    for(let i=0;i<valueArray.length;i++) {
+      if (!definitionSet.has(valueArray[i])) {
+        throw makeSchemaError(
+          prop_name + ': "' +  valueArray[i] + 
+          '" is not in ' + Array.from(definitionSet.values()).join(',')
+        );
+      }
+    }
+    return val;
+  }
+  return _isSubSet;
+};
+
+export function arrayOf(def) {
+  /**
+   * Returns function that determines if all elements in the value array are
+   * validated by the validatior provided as the parameter to this function.
+   * @param {validator} Another validator ( or collection of valdiators ).
+   * @returns (function} the validation function.
+   */
+
+  function _arrayOf(val, schema, prop_name) {
+    if (({}.toString.call(val) !== '[object Array]') ||
+       (!val.length > 0)) {
+      throw makeSchemaError(
+        prop_name + ': "' + val + '" is either not an array or is empty.'
+      );
+    }
+    for(let i=0; i<val.length; i++) {
+      try {
+        if(def.is_schema){
+          def.throw_errors = true;
+          def.validate(val[i]);
+        }
+        else {
+          def(val[i], schema, prop_name);
+        }
+      }
+      catch(err) {
+        throw makeSchemaError(
+          prop_name + ': "' + val + '" threw: ' + err.message
+        );
+      }
+    }
+    return val;
+  }
+  return _arrayOf;
+};
+
 export function isHTML() {
   /**
    * Returns function that determines if a value appears to be an HTML tag.
-   * @param {any} val the value from the configured field.
+   * @param {any} None
    * @returns (function} the validation function.
    */
   function _ishtml(val, schema, prop_name) {

@@ -14,6 +14,8 @@ import {
   isNumber,
   matchRe,
   oneOf,
+  isSubSet,
+  arrayOf,
   mustMatch,
   mustNotMatch,
   Schema,
@@ -29,7 +31,6 @@ test('Test validators.isArray', async (t) => {
     sut = new Schema([
       [Required('arr'), isArray()]
     ]);
-    sut.throw_errors = true;
   });
 
   await t.test('valid', () => {
@@ -52,7 +53,6 @@ test('Test validators.isNumber', async (t) =>{
     sut = new Schema([
       [Required('message'), isNumber()]
     ]);
-    sut.throw_errors = true;
   });
 
   await t.test('valid', () => {
@@ -75,7 +75,6 @@ test('Test validators.isInteger', async (t) =>{
     sut = new Schema([
       [Required('danumber'), isInteger()]
     ]);
-    sut.throw_errors = true;
   });
 
   await t.test('valid', () => {
@@ -98,7 +97,6 @@ test('Test validators.isString', async (t) =>{
     sut = new Schema([
       [Required('message'), isString()]
     ]);
-    sut.throw_errors = true;
   });
 
   await t.test('valid', () => {
@@ -123,7 +121,6 @@ test('Test validators.isDate', async (t) =>{
     sut = new Schema([
       [Required('date'), isDate()]
     ]);
-    sut.throw_errors = true;
   });
 
   await t.test('valid', () => {
@@ -147,15 +144,13 @@ test('Test validators.matchRe', async (t) =>{
     sut = new Schema([
       [Required('re'), matchRe(/^.+s$/)]
     ]);
-    sut.throw_errors = true;
   });
 
   await t.test('not regular expression', () => {
     try {
-      const invalid = new Schema([
+      new Schema([
         [Required('re'), matchRe('/^.+s')]
       ]);
-      invalid.throw_errors = true;
       assert.fail('Invalid RegExp did not throw.');
     }
     catch(e) {
@@ -187,7 +182,6 @@ test('Test validators.oneOf', async (t) =>{
     sut = new Schema([
       [Required('liberty'), oneOf(['death', 'liberty'])]
     ]);
-    sut.throw_errors = true;
   });
 
   await t.test('valid', () => {
@@ -217,7 +211,6 @@ test('Test validators.oneOf with callable', async (t) =>{
     sut = new Schema([
       [Required('line'), oneOf(evilette.threaten.bind(evilette))]
     ]);
-    sut.throw_errors = true;
   });
 
   await t.test('valid', () => {
@@ -233,6 +226,113 @@ test('Test validators.oneOf with callable', async (t) =>{
 
 });
 
+test('Test validators.isSubSet', async (t) =>{
+
+  let sut;
+  t.before(() => { 
+    sut = new Schema([
+      [Required('roles'), isSubSet(['striper', 'nurse', 'doctor'])]
+    ]);
+  });
+
+  await t.test('valid', () => {
+    const expectation = {roles: ['striper', 'nurse']};
+    assert.deepStrictEqual(sut.validate(expectation), expectation);
+  });
+  
+  await t.test('invalid not in definition', () => {
+    const expectation = new Error('roles: "yeah" is not in striper,nurse,doctor');
+    expectation.isSchemaError = true;
+    assert.throws(() => sut.validate({roles: ['yeah']}), expectation);
+  });
+
+  await t.test('invalid not Set castable', () => {
+    assert.throws(
+      () => sut.validate({roles: 10}),
+      new TypeError('number 10 is not iterable (cannot read property Symbol(Symbol.iterator))')
+    );
+  });
+
+});
+
+test('Test validators.arrayOf Schema', async (t) =>{
+
+  let sut;
+  t.before(() => { 
+    sut = new Schema([
+      [Required('mob'), arrayOf( 
+        new Schema([
+          [Required('name'), isString()],
+          [Required('role'), isString()]
+        ])
+      )]
+    ]);
+  });
+
+  await t.test('one valid', () => {
+    const expectation = { mob: [{ name: 'gravano', role: 'rat' }]};
+    assert.deepStrictEqual(sut.validate(expectation), expectation);
+  });
+  
+  await t.test('multiple valid', () => {
+    const expectation = { mob: [
+      { name: 'gravano', role: 'rat' },
+      { name: 'soprano', role: 'actor' }
+    ]};
+    assert.deepStrictEqual(sut.validate(expectation), expectation);
+  });
+
+  await t.test('not an array', () => {
+    const expectation = new Error('mob: "10" is either not an array or is empty.');
+    expectation.isSchemaError = true;
+    assert.throws(() => sut.validate({ mob: 10 }), expectation); 
+  });
+
+  await t.test('not valid content', () => {
+    const expectation = new Error('mob: "[object Object],[object Object]" threw: role: "8.9" is not a string.');
+    expectation.isSchemaError = true;
+    const toValidate = { mob: [
+      { name: 'gravano', role: 8.9 },
+      { name: 'soprano', role: 'actor' }
+    ]};
+    assert.throws(() => sut.validate(toValidate), expectation); 
+  });
+
+});
+
+test('Test validators.arrayOf validator', async (t) =>{
+
+  let sut;
+  t.before(() => { 
+    sut = new Schema([
+      [Required('cheese'), arrayOf(isString())]
+    ]);
+  });
+
+  await t.test('one valid', () => {
+    const expectation = { cheese: ['grueyre']};
+    assert.deepStrictEqual(sut.validate(expectation), expectation);
+  });
+  
+  await t.test('multiple valid', () => {
+    const expectation = { cheese: ['cheddar', 'american'] };
+    assert.deepStrictEqual(sut.validate(expectation), expectation);
+  });
+
+  await t.test('not an array', () => {
+    const expectation = new Error('cheese: "fotty" is either not an array or is empty.');
+    expectation.isSchemaError = true;
+    assert.throws(() => sut.validate({ cheese: 'fotty' }), expectation); 
+  });
+
+  await t.test('not valid content', () => {
+    const expectation = new Error('cheese: "stilton,[object Object]" threw: cheese: "[object Object]" is not a string.');
+    expectation.isSchemaError = true;
+    assert.throws(() => sut.validate({ cheese: ['stilton', { supply: 'bad'}] }), expectation); 
+  });
+
+});
+
 test('Test validators.mustMatch', async (t) =>{
 
   let sut;
@@ -242,7 +342,6 @@ test('Test validators.mustMatch', async (t) =>{
       [Optional('giveme'), isString()]
 
     ]);
-    sut.throw_errors = true;
   });
 
   await t.test('valid', () => {
@@ -271,7 +370,6 @@ test('Test validators.mustNotMatch', async (t) =>{
       [Optional('giveme'), isString()]
 
     ]);
-    sut.throw_errors = true;
   });
 
   await t.test('valid', () => {

@@ -115,4 +115,50 @@ test('Test Schema.validate', async (t) => {
     assert.throws(()=>sut.validate(arg), expectation);
   
   });
+  
+  await t.test('nested schema good.', () => {
+    const sut = new Schema([
+      [Optional('name'),  isString()],
+      [Required('label'), isString()],
+      [Optional('group'),  new Schema([
+        [Required('name'), isString()],
+        [Required('tag'), isString()]
+      ])],
+      [Required('from'),  isString()],
+      [Required('to'),  isString()],
+    ]);
+    sut.throw_errors = true;
+    const arg = {
+      name: 'dolla',
+      label: 'dolla',
+      group: { name: 'first', tag: 'first' },
+      from: '$0.75',
+      to: '$1.00'
+    };
+    assert.deepStrictEqual(sut.validate(arg), arg);
+  });
+  
+  await t.test('nested schema nested error.', () => {
+    const sut = new Schema([
+      [Optional('name'),  isString()],
+      [Required('label'), isString()],
+      [Optional('group'),  new Schema([
+        [Required('name'), isString()],
+        [Required('tag'), isString()]
+      ])],
+      [Required('from'),  isString()],
+      [Required('to'),  isString()],
+    ]);
+    sut.throw_errors = true;
+    const arg = {
+      name: 'dolla',
+      label: 'dolla',
+      group: { name: 'first', tag: 10 },
+      from: '$0.75',
+      to: '$1.00'
+    };
+    const expectation = new Error('tag: "10" is not a string.');
+    expectation.isSchemaError = true;
+    assert.throws(()=>sut.validate(arg), expectation);
+  });
 });

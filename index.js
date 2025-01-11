@@ -8,6 +8,8 @@ export {
   isNumber,
   matchRe,
   oneOf,
+  isSubSet,
+  arrayOf,
   isHTML,
   mustMatch,
   mustNotMatch
