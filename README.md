@@ -1,4 +1,4 @@
-# voluptjs [![Actions Status](https://github.com/shinsons/voluptjs/workflows/publish.yml/badge.svg)](https://github.com/shinsons/voluptjs/actions)
+# voluptjs ![Publish](https://github.com/shinsons/voluptjs/workflows/publish.yml/badge.svg)
 
 A work-a-like javascript clone of python voluptuous (https://pypi.org/project/voluptuous)
 
