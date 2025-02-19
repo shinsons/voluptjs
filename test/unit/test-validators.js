@@ -68,8 +68,7 @@ test('Test validators.isNumber', async (t) =>{
 
 });
 
-test('Test validators.isInteger', async (t) =>{
-
+test('Test validators.isInteger', async (t) => {
   let sut;
   t.before(() => {
     sut = new Schema([
@@ -77,17 +76,59 @@ test('Test validators.isInteger', async (t) =>{
     ]);
   });
 
-  await t.test('valid', () => {
-    const expectation = {danumber: 123};
+  // Default behavior (no sign constraint)
+  await t.test('default valid', () => {
+    const expectation = { danumber: 123 };
     assert.deepStrictEqual(sut.validate(expectation), expectation);
   });
 
-  await t.test('invalid', () => {
+  await t.test('default invalid', () => {
     const expectation = new Error('danumber: "123.45" is not an integer.');
     expectation.isSchemaError = true;
-    assert.throws(() => sut.validate({danumber: 123.45}), expectation);
+    assert.throws(() => sut.validate({ danumber: 123.45 }), expectation);
   });
 
+  // Tests for positive integer constraint (signed === false)
+  await t.test('valid positive integer with signed false', () => {
+    let positiveSchema = new Schema([
+      [Required('danumber'), isInteger(false)]
+    ]);
+    // 0 and positive integers should pass
+    const expectation1 = { danumber: 0 };
+    const expectation2 = { danumber: 123 };
+    assert.deepStrictEqual(positiveSchema.validate(expectation1), expectation1);
+    assert.deepStrictEqual(positiveSchema.validate(expectation2), expectation2);
+  });
+
+  await t.test('invalid positive integer with signed false', () => {
+    let positiveSchema = new Schema([
+      [Required('danumber'), isInteger(false)]
+    ]);
+    // Negative integer should fail
+    const expectation = new Error('danumber: "-123" is not a positive integer.');
+    expectation.isSchemaError = true;
+    assert.throws(() => positiveSchema.validate({ danumber: -123 }), expectation);
+  });
+
+  // Tests for negative integer constraint (signed === true)
+  await t.test('valid negative integer with signed true', () => {
+    let negativeSchema = new Schema([
+      [Required('danumber'), isInteger(true)]
+    ]);
+    // Negative integer should pass
+    const expectation = { danumber: -456 };
+    assert.deepStrictEqual(negativeSchema.validate(expectation), expectation);
+  });
+
+  await t.test('invalid negative integer with signed true', () => {
+    let negativeSchema = new Schema([
+      [Required('danumber'), isInteger(true)]
+    ]);
+    // Positive integer should fail
+    const expectation = new Error('danumber: "789" is not a negative integer.');
+    expectation.isSchemaError = true;
+    assert.throws(() => negativeSchema.validate({ danumber: 789 }), expectation);
+  });
 });
 
 test('Test validators.isString', async (t) =>{
