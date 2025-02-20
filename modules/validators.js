@@ -94,17 +94,35 @@ export function isDate() {
   return _isdate;
 };
 
-export function isInteger() {
+export function isInteger(signed) {
   /**
-   * Returns function that determines if a value is an integer or not.
-   * @param {any} val the value from the configured field.
-   * @returns (function} the validation function.
+   * Returns a validation function that checks whether a value is an integer and,
+   * optionally, whether it meets the specified sign constraint.
+   *
+   * @param {any} val - The value to validate.
+   * @param {object} schema - (Unused; kept for signature consistency.)
+   * @param {string} prop_name - The property name used for error messages.
+   * @returns {number} The validated integer if it meets all criteria.
+   * @throws {Error} If the value is not an integer or does not satisfy the sign constraint.
    */
   function _isinteger(val, schema, prop_name) {
     if (typeof val === 'number' && !isNaN(val) && val % 1 === 0) {
+      // If a sign constraint is specified, perform an additional check.
+      if (typeof signed === 'boolean') {
+        if (signed === false && val < 0) {
+          // When signed is false, only positive integers (and zero) are allowed.
+          throw makeSchemaError(
+            prop_name + ': "' + val + '" is not a positive integer.'
+          );
+        } else if (signed === true && val >= 0) {
+          // When signed is true, only negative integers are allowed.
+          throw makeSchemaError(
+            prop_name + ': "' + val + '" is not a negative integer.'
+          );
+        }
+      }
       return val;
-    }
-    else {
+    } else {
       throw makeSchemaError(
         prop_name + ': "' + val + '" is not an integer.'
       );
