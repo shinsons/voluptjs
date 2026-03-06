@@ -149,6 +149,34 @@ export function isNumber() {
   return _isnumber;
 };
 
+export function inRange(min, max, datatype) {
+  /**
+   * Returns function that determines if a value of a specified type is 
+   * in a specified range or not.
+   * @param {number} min the minimum value of the range.
+   * @param {number} max the maximum value of the range.
+   * @param {string} datatype the type of the value to validate.
+   * @returns {function} the validation function.
+   */
+  if (min > max) {
+    throw new Error('Range validator requires min to be less than or equal to max.');
+  }
+  const normDatatype = datatype ? datatype.toLowerCase() : '';
+  if (normDatatype !== 'int' && normDatatype !== 'float') {
+    throw new Error('Range validator requires datatype to be either "int" or "float".');
+  }
+  const validateType = normDatatype === 'int' ? isInteger() : isNumber();
+  function _inrange(val, schema, prop_name) {
+    // validate type using the specified validator (will throw if invalid)
+    validateType(val, schema, prop_name);
+    if (val < min || val > max) {
+      throw makeSchemaError(prop_name + ': "' + val + '" is not between ' + min + ' and ' + max + '.');
+    }
+    return val;
+  }
+  return _inrange;
+};
+
 export function matchRe(re) {
   /**
    * Returns function that determines if a value matches the configured

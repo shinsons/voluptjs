@@ -12,6 +12,7 @@ import {
   isDate,
   isInteger,
   isNumber,
+  inRange,
   matchRe,
   oneOf,
   isSubSet,
@@ -129,6 +130,40 @@ test('Test validators.isInteger', async (t) => {
     expectation.isSchemaError = true;
     assert.throws(() => negativeSchema.validate({ danumber: 789 }), expectation);
   });
+});
+
+test('Test validators.inRange', async (t) => {
+
+  await t.test('int in range', () => {
+    let sut = new Schema([
+      [Required('val'), inRange(5, 10, 'int')]
+    ]);
+    const expectation = { val: 7 };
+    assert.deepStrictEqual(sut.validate(expectation), expectation);
+  });
+
+  await t.test('float out of range', () => {
+    let sut = new Schema([
+      [Required('val'), inRange(5.5, 10.5, 'float')]
+    ]);
+    const expectation = new Error('val: "10.6" is not between 5.5 and 10.5.');
+    expectation.isSchemaError = true;
+    assert.throws(() => sut.validate({ val: 10.6 }), expectation);
+  });
+
+  await t.test("float doesn't match input datatype of int", () => {
+    let sut = new Schema([
+      [Required('val'), inRange(5, 10, 'int')]
+    ]);
+    const expectation = new Error('val: "7.5" is not an integer.');
+    expectation.isSchemaError = true;
+    assert.throws(() => sut.validate({ val: 7.5 }), expectation);
+  });
+
+  await t.test('invalid data type', () => {
+    assert.throws(() => inRange(1, 10, 'string'), new Error('Range validator requires datatype to be either "int" or "float".'));
+  });
+
 });
 
 test('Test validators.isString', async (t) =>{

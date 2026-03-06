@@ -6,6 +6,7 @@ export {
   isDate,
   isInteger,
   isNumber,
+  inRange,
   matchRe,
   oneOf,
   isSubSet,
